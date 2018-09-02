@@ -2,7 +2,8 @@ import React from 'react';
 
 const DrumPad = (props) => (
   <div>
-    <button onClick={props.drumSound.sound}>{props.drumSound.name}</button>
+    <audio src={props.drumSound.sound}></audio>
+    <button onClick={props.drumSound.soundLog}>{props.drumSound.name}</button>
   </div>
 );
 
