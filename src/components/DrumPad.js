@@ -2,8 +2,18 @@ import React from 'react';
 
 const DrumPad = (props) => (
   <div>
-    <audio src={props.drumSound.sound}></audio>
-    <button onClick={props.drumSound.soundLog}>{props.drumSound.name}</button>
+    <audio
+      ref={(audio) => { props.drumSound.ref = audio }}
+      id={props.drumSound.name}
+      src={props.drumSound.sound}
+      className="clip"
+      >
+    </audio>
+    <button
+      onClick={() => props.playSound(props.drumSound.ref)}
+      >
+      {props.drumSound.keyboardKey} ({props.drumSound.name})
+    </button>
   </div>
 );
 
