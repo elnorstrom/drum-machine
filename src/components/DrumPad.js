@@ -1,19 +1,19 @@
 import React from 'react';
 
 const DrumPad = (props) => (
-  <div>
+  <div
+    className="drum-pad"
+    id={props.drumSound.name} 
+    onClick={() => props.playSound(props.drumSound.keyCode)}
+  >
+    {props.drumSound.keyboardKey}
     <audio
       ref={(audio) => { props.drumSound.ref = audio }}
-      id={props.drumSound.name}
+      id={props.drumSound.keyboardKey}
       src={props.drumSound.sound}
       className="clip"
-      >
+    >
     </audio>
-    <button
-      onClick={() => props.playSound(props.drumSound.ref)}
-      >
-      {props.drumSound.keyboardKey} ({props.drumSound.name})
-    </button>
   </div>
 );
 
