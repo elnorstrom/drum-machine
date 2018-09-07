@@ -2,14 +2,25 @@ import React from 'react';
 import Header from './Header';
 import Display from './Display';
 import DrumPads from './DrumPads';
+import Reapeater from './Repeater';
 import AudioInput from './AudioInput';
 
 export default class DrumMachineApp extends React.Component {
   constructor() {
     super();
+    this.repeater = this.repeater.bind(this);
     this.playSound = this.playSound.bind(this);
+    this.repeaterDurationInput = this.repeaterDurationInput.bind(this);
+    this.repeaterSpeedInput = this.repeaterSpeedInput.bind(this);
+    this.removeClass = this.removeClass.bind(this);
     this.state = {
-      lastPlayed: '',
+      lastPlayed: <p>&nbsp;</p>,
+      repeater: {
+        duration: 1,
+        durationFormatted: 1,
+        speed: 1,
+        speedFormatted: 1
+      },
       snare: {
         name: 'snare',
         keyboardKey: 'X',
@@ -85,23 +96,90 @@ export default class DrumMachineApp extends React.Component {
     document.addEventListener('keydown', this.playSound);
   };
 
-  playSound(e) {
+  repeater(time, speed, sound) {
+    if (time <= 0 ) {
+      return;
+    }
+    setTimeout(() =>  {
+      sound.currentTime = 0;
+      sound.play()
+    }, time);
+    this.repeater(time - speed, speed, sound);
+  };
+
+  playSound(e, name) {
     let key = e.keyCode === undefined ? e : e.keyCode;
-    if (!this.state.keyboardMap[key]) return;
+    if (!this.state.keyboardMap[key]) {
+      return;
+    };
+    let currentId = name ? name : e.key.toUpperCase();
     let currentSound = this.state.keyboardMap[key].ref;
     let currentName = this.state.keyboardMap[key].displayName;
+    let regularClass = "drum-pad";
+    let activeClass = " drum-pad__active";
     currentSound.currentTime = 0;
     currentSound.play();
-    this.setState(() => ({ lastPlayed: currentName }));
+
+    if (this.state.repeater.duration > 1) {
+      this.repeater(this.state.repeater.duration, this.state.repeater.speed, currentSound);
+    };
+    this.setState(() => ({ lastPlayed: <p>{currentName}</p> }));
+    document.getElementById(currentId).className += activeClass;
+    this.removeClass(currentId, regularClass);
+  };
+
+  removeClass(id, whatClass) {
+    setTimeout(() => {
+      document.getElementById(id).className += whatClass;
+    }, 50);
+  };
+
+  repeaterDurationInput(e) {
+    let duration = Number(e.target.value);
+    let durationFormatted = duration;
+    this.setState((prevState) => ({
+      repeater: {
+        duration: duration,
+        durationFormatted: durationFormatted,
+        speed: prevState.repeater.speed,
+        speedFormatted: prevState.repeater.speedFormatted
+      }
+    }));
+  };
+
+  repeaterSpeedInput(e) {
+    let speed = Number(e.target.value);
+    let speedFormatted = speed;
+    this.setState((prevState) => ({
+      repeater: {
+        duration: prevState.repeater.duration,
+        durationFormatted: prevState.repeater.durationFormatted,
+        speed: speed,
+        speedFormatted: speedFormatted
+      }
+    }));
+  };
+
+  componentDidUpdate() {
+    console.log(this.state.repeater)
   };
 
   render() {
     return (
       <div id="drum-machine">
         <Header />
-        <Display id="display" lastPlayed={this.state.lastPlayed}/>
-        <DrumPads drumSounds={this.state} playSound={this.playSound}/>
-        <AudioInput />
+        <Display
+          lastPlayed={this.state.lastPlayed}
+        />
+        <DrumPads
+          drumSounds={this.state}
+          playSound={this.playSound}
+        />
+        <Reapeater
+          repeaterDurationInput={this.repeaterDurationInput}
+          repeaterSpeedInput={this.repeaterSpeedInput}
+          durationAndSpeed={this.state.repeater}
+        />
       </div>
     );
   };

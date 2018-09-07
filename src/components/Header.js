@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Header = () => (
-  <div>
+  <div className="header">
     <h1>Drum Machine!</h1>
   </div>
 );
