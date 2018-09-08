@@ -1,6 +1,17 @@
+$transition-duration: 100ms;
 
 .drum-pad {
+  display: grid;
+  justify-content: center;
   background: red;
-  padding: 3rem;
+  padding: 2rem;
   cursor: pointer;
+  border: 3px solid lightgrey;
+  transition: all $transition-duration ease;
+}
+
+.drum-pad__active {
+  border: 3px solid yellow;
+  transform: scale(1.1);
+  transition: all $transition-duration ease;
 }
