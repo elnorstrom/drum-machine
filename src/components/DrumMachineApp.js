@@ -168,19 +168,22 @@ export default class DrumMachineApp extends React.Component {
     return (
       <div id="drum-machine">
         <Header />
-        <Display
-          lastPlayed={this.state.lastPlayed}
-        />
-        <DrumPads
-          drumSounds={this.state}
-          playSound={this.playSound}
-        />
-        <Reapeater
-          repeaterDurationInput={this.repeaterDurationInput}
-          repeaterSpeedInput={this.repeaterSpeedInput}
-          durationAndSpeed={this.state.repeater}
-        />
+        <div className="main-app">
+          <Display
+            lastPlayed={this.state.lastPlayed}
+          />
+          <DrumPads
+            drumSounds={this.state}
+            playSound={this.playSound}
+          />
+          <Reapeater
+            repeaterDurationInput={this.repeaterDurationInput}
+            repeaterSpeedInput={this.repeaterSpeedInput}
+            durationAndSpeed={this.state.repeater}
+          />
+        </div>
       </div>
     );
   };
 };
+
