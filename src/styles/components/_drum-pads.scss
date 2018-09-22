@@ -5,9 +5,10 @@
   grid-row: 3fr;
   grid-gap: 1rem;
   flex-flow: column wrap;
-  background: blue;
+  background: darken($main-color, 10%);
   padding: 1rem;
   justify-content: center;
   align-items: center;
+  border-radius: 0px 0px 10px 10px;
   // height: 90vh;
 }
