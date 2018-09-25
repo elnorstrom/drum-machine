@@ -121,7 +121,9 @@ export default class DrumMachineApp extends React.Component {
     currentSound.play();
 
     if (this.state.repeater.duration > 1) {
-      this.repeater(this.state.repeater.duration, this.state.repeater.speed, currentSound);
+      let speed = this.state.repeater.speed;
+      let duration = this.state.repeater
+      this.repeater(duration, speed, currentSound);
     };
     this.setState(() => ({ lastPlayed: <p>{currentName}</p> }));
     document.getElementById(currentId).className += activeClass;
