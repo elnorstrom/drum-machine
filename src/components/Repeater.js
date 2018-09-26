@@ -1,9 +1,10 @@
 import React from 'react';
 
 const Repeater = (props) => (
-  <div>
+  <div className="sliders">
     <label htmlFor="duration">Duration {props.durationAndSpeed.duration}</label>
     <input
+      className="slider"
       type="range"
       min="1000"
       max="5000"
@@ -12,6 +13,7 @@ const Repeater = (props) => (
     />
     <label htmlFor="speed">Speed {props.durationAndSpeed.speed}</label>
     <input
+      className="slider"
       type="range"
       min="10"
       max="1000"
