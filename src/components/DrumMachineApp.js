@@ -16,10 +16,10 @@ export default class DrumMachineApp extends React.Component {
     this.state = {
       lastPlayed: <p>&nbsp;</p>,
       repeater: {
-        duration: 1,
-        durationFormatted: 1,
-        speed: 1,
-        speedFormatted: 1
+        duration: 0,
+        durationFormatted: '0',
+        speed: 0,
+        speedFormatted: '0'
       },
       snare: {
         name: 'snare',
@@ -119,10 +119,10 @@ export default class DrumMachineApp extends React.Component {
     let activeClass = " drum-pad__active";
     currentSound.currentTime = 0;
     currentSound.play();
-
-    if (this.state.repeater.duration > 1) {
+    let repeaterIsOn = this.state.repeater.duration ? this.state.repeater.speed ? true : false : false;
+    if (repeaterIsOn) {
       let speed = this.state.repeater.speed;
-      let duration = this.state.repeater
+      let duration = this.state.repeater.duration;
       this.repeater(duration, speed, currentSound);
     };
     this.setState(() => ({ lastPlayed: <p>{currentName}</p> }));
@@ -138,7 +138,8 @@ export default class DrumMachineApp extends React.Component {
 
   repeaterDurationInput(e) {
     let duration = Number(e.target.value);
-    let durationFormatted = duration;
+    let durationAsString = e.target.value;
+    let durationFormatted = `${[...durationAsString].shift()}.${durationAsString.slice(1, -1)}`;
     this.setState((prevState) => ({
       repeater: {
         duration: duration,
@@ -151,7 +152,9 @@ export default class DrumMachineApp extends React.Component {
 
   repeaterSpeedInput(e) {
     let speed = Number(e.target.value);
-    let speedFormatted = speed;
+    let speedFormatted = speed ? [...e.target.value].slice(0, -1) : '0';
+    console.log(speed)
+    console.log(speedFormatted);
     this.setState((prevState) => ({
       repeater: {
         duration: prevState.repeater.duration,
