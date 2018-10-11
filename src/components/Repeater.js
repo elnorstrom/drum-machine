@@ -21,6 +21,9 @@ const Repeater = (props) => (
       max="1000"
       name="speed"
       onChange={props.repeaterSpeedInput}/>
+      <div>
+        <button onClick={props.fadeOut}>{props.fadeOutIsOn ? "Fade Out Is On" : "Fade Out Is Off"}</button>
+      </div>
   </div>
 );
 
