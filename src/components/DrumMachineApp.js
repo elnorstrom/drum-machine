@@ -13,8 +13,10 @@ export default class DrumMachineApp extends React.Component {
     this.repeaterDurationInput = this.repeaterDurationInput.bind(this);
     this.repeaterSpeedInput = this.repeaterSpeedInput.bind(this);
     this.removeClass = this.removeClass.bind(this);
+    this.fadeOut = this.fadeOut.bind(this);
     this.state = {
       lastPlayed: <p>&nbsp;</p>,
+      fadeOutIsOn: false,
       repeater: {
         duration: 0,
         durationFormatted: '0',
@@ -37,7 +39,7 @@ export default class DrumMachineApp extends React.Component {
         name: 'ride',
         keyboardKey: 'W',
         keyCode: 87,
-        sound: '../../sounds/CyCdh_K3Crash-05.wav'
+        sound: '../sounds/CyCdh_K3Crash-05.wav'
       },
       crash: {
         name: 'crash',
@@ -96,15 +98,24 @@ export default class DrumMachineApp extends React.Component {
     document.addEventListener('keydown', this.playSound);
   };
 
-  repeater(time, speed, sound) {
-    if (time <= 0 ) {
+  repeater(time, speed, sound, vol = 1, initialTime = time) {
+    if (time > initialTime) {
       return;
     }
+    let theTime = time === initialTime ? 0 : time;
     setTimeout(() =>  {
       sound.currentTime = 0;
+      sound.volume = vol <= 0 ? 0 : vol;
       sound.play()
-    }, time);
-    this.repeater(time - speed, speed, sound);
+    }, theTime);
+    let nextVol;
+    if (this.state.fadeOutIsOn) {
+      let newVol = vol * 100;
+      let subtractVolumeBy = initialTime / speed;
+      newVol -= subtractVolumeBy;
+      nextVol = Number((newVol / 100).toFixed(2));
+    }
+    this.repeater(theTime + speed, speed, sound, nextVol, initialTime);
   };
 
   playSound(e, name) {
@@ -119,7 +130,10 @@ export default class DrumMachineApp extends React.Component {
     let activeClass = " drum-pad__active";
     currentSound.currentTime = 0;
     currentSound.play();
-    let repeaterIsOn = this.state.repeater.duration ? this.state.repeater.speed ? true : false : false;
+    let repeaterIsOn = this.state.repeater.duration ?
+        this.state.repeater.speed ? true : false
+      : 
+        false;
     if (repeaterIsOn) {
       let speed = this.state.repeater.speed;
       let duration = this.state.repeater.duration;
@@ -138,6 +152,7 @@ export default class DrumMachineApp extends React.Component {
 
   repeaterDurationInput(e) {
     let duration = Number(e.target.value);
+    console.log(duration);
     let durationAsString = e.target.value;
     let durationFormatted = `${[...durationAsString].shift()}.${durationAsString.slice(1, -1)}`;
     this.setState((prevState) => ({
@@ -165,8 +180,11 @@ export default class DrumMachineApp extends React.Component {
     }));
   };
 
-  componentDidUpdate() {
-    console.log(this.state.repeater)
+  fadeOut() {
+    console.log(this.state.fadeOutIsOn);
+    this.setState((prevState) => ({
+      fadeOutIsOn: !prevState.fadeOutIsOn
+    }));
   };
 
   render() {
@@ -185,6 +203,8 @@ export default class DrumMachineApp extends React.Component {
             repeaterDurationInput={this.repeaterDurationInput}
             repeaterSpeedInput={this.repeaterSpeedInput}
             durationAndSpeed={this.state.repeater}
+            fadeOut={this.fadeOut}
+            fadeOutIsOn={this.state.fadeOutIsOn}
           />
         </div>
       </div>
