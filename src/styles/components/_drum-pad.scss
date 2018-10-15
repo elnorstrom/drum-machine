@@ -3,8 +3,10 @@ $transition-duration: 100ms;
 .drum-pad {
   display: grid;
   justify-content: center;
+  align-items: center;
   background: $main-color;
-  padding: 2rem;
+  box-sizing: border-box;
+  height: 100%;
   cursor: pointer;
   border: 3px solid lightgrey;
   transition: all $transition-duration ease;

@@ -1,7 +1,18 @@
 
-.drum-machine {
-  display: flex;
-  justify-content: stretch;
-  align-items: stretch;
-  height: 100vh;
+.main-app {
+  border-radius: 40px;
+  width: 95vw;
+  margin: 0 auto;
+}
+
+@media (min-width: 600px) {
+  .main-app {
+    width: 70vw;
+  }
+}
+
+@media (min-width: 800px) {
+  .main-app {
+    width: 50vw;
+  }
 }

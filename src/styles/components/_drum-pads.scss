@@ -3,12 +3,12 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-row: 3fr;
-  grid-gap: 1rem;
+  grid-gap: 10px;
   flex-flow: column wrap;
   background: darken($main-color, 10%);
-  padding: 1rem;
+  padding: 10px;
   justify-content: center;
   align-items: center;
-  border-radius: 0px 0px 10px 10px;
-  // height: 90vh;
+  height: 50vh;
+  grid-template-rows: repeat(3, 1fr)
 }

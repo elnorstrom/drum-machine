@@ -21,7 +21,8 @@ export default class DrumMachineApp extends React.Component {
         duration: 0,
         durationFormatted: '0',
         speed: 0,
-        speedFormatted: '0'
+        speedFormatted: '0',
+        inputSpeed: 0
       },
       snare: {
         name: 'snare',
@@ -166,16 +167,19 @@ export default class DrumMachineApp extends React.Component {
   };
 
   repeaterSpeedInput(e) {
-    let speed = Number(e.target.value);
-    let speedFormatted = speed ? [...e.target.value].slice(0, -1) : '0';
-    console.log(speed)
+    let inputSpeed = Number(e.target.value);
+    let speedFormatted = inputSpeed ? [...e.target.value].slice(0, -1) : '0';
     console.log(speedFormatted);
+    let reverseNumber = Math.abs(inputSpeed - 1000);
+    let speed = reverseNumber > 0 ? reverseNumber : 1;
+    console.log(reverseNumber);
     this.setState((prevState) => ({
       repeater: {
         duration: prevState.repeater.duration,
         durationFormatted: prevState.repeater.durationFormatted,
         speed: speed,
-        speedFormatted: speedFormatted
+        speedFormatted: speedFormatted,
+        inputSpeed: inputSpeed
       }
     }));
   };
@@ -192,13 +196,15 @@ export default class DrumMachineApp extends React.Component {
       <div id="drum-machine">
         <Header />
         <div className="main-app">
-          <Display
-            lastPlayed={this.state.lastPlayed}
-          />
-          <DrumPads
-            drumSounds={this.state}
-            playSound={this.playSound}
-          />
+          <div className="drum-machine">
+            <Display
+              lastPlayed={this.state.lastPlayed}
+            />
+            <DrumPads
+              drumSounds={this.state}
+              playSound={this.playSound}
+            />
+          </div>
           <Reapeater
             repeaterDurationInput={this.repeaterDurationInput}
             repeaterSpeedInput={this.repeaterSpeedInput}
