@@ -1,9 +1,8 @@
 $main-color: rgb(61, 64, 80);
+$main-red: rgb(255, 48, 48);
+$main-green: rgb(0, 198, 0);
+$background-color: linear-gradient(rgba(255, 159, 159, 0.557), rgb(255, 255, 181));
 
 html {
-  background: rgb(179, 255, 176);
-  height: 100%;
-  width: 100%;
+  background: $background-color;
 }
-
-
